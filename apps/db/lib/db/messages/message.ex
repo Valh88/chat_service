@@ -4,12 +4,12 @@ defmodule Db.Messages.Message do
   alias Db.Users.User
 
   schema "private_messages" do
-    belongs_to :user, User
-    belongs_to :from_user, User
-    field :message, :string
-    field :status, :string #TODO  доставлено-не доставлено
+    belongs_to(:user, User)
+    belongs_to(:from_user, User)
+    field(:message, :string)
+    # TODO  доставлено-не доставлено
+    field(:status, :string)
 
     timestamps()
   end
-
 end

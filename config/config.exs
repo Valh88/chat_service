@@ -17,7 +17,6 @@ config :db, Db.Repo,
   hostname: "localhost",
   pool_size: 10
 
-
 # Sample configuration:
 #
 #     config :logger, :console,
@@ -26,3 +25,5 @@ config :db, Db.Repo,
 #       metadata: [:user_id]
 #
 config :db, ecto_repos: [Db.Repo]
+
+config :joken, default_signer: "my_secret_key"

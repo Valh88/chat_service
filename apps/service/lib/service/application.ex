@@ -11,6 +11,8 @@ defmodule Service.Application do
       # Starts a worker by calling: Service.Worker.start_link(arg)
       # {Service.Worker, arg}
       Db.Repo,
+      {Bandit, plug: Server.RouterBuilder, scheme: :http, port: 4000}
+      # :ets.new(:session, [:named_table, :public, read_concurrency: true]),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

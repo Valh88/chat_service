@@ -4,10 +4,9 @@ defmodule Db.Users.Contact do
   alias Db.Users.User
 
   schema "contacts" do
-    belongs_to :user, User
-    belongs_to :contact, User
+    belongs_to(:user, User)
+    belongs_to(:contact, User)
 
     timestamps()
   end
-
 end

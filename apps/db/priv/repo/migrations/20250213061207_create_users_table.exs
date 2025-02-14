@@ -8,5 +8,7 @@ defmodule Db.Repo.Migrations.CreateUsersTable do
 
       timestamps()
     end
+
+    create unique_index(:users, [:username])
   end
 end
