@@ -12,7 +12,6 @@ defmodule Db.Users.User do
     many_to_many :contacts, User,
       join_through: Contact,
       join_keys: [user_id: :id, contact_id: :id]
-
     many_to_many :messages, User,
       join_through: Message,
       join_keys: [user: :id, from_user: :id]
