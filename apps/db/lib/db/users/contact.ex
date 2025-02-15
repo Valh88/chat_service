@@ -1,6 +1,6 @@
 defmodule Db.Users.Contact do
   use Ecto.Schema
-  # # import Ecto.Changeset
+  import Ecto.Changeset
   alias Db.Users.User
 
   schema "contacts" do
@@ -8,5 +8,11 @@ defmodule Db.Users.Contact do
     belongs_to(:contact, User)
 
     timestamps()
+  end
+
+  def changeset(contact, attrs) do
+    contact
+    |> cast(attrs, [:user_id, :contact_id])
+    |> validate_required([:user_id, :contact_id])
   end
 end

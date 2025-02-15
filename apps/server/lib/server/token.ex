@@ -1,5 +1,7 @@
 defmodule Server.Token do
   use Joken.Config
+
+  alias Db.Users
   # Конфигурация токена
   def token_config() do
     default_claims()
@@ -21,6 +23,13 @@ defmodule Server.Token do
 
       :error ->
         {:error, :invalid_token}
+    end
+  end
+
+  def check_token?(token) do
+    case token do
+      nil -> false
+      _ -> true
     end
   end
 end

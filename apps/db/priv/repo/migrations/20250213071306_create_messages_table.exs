@@ -4,7 +4,7 @@ defmodule Db.Repo.Migrations.CreateMessagesTable do
   def change do
     create table :private_messages do
       add :user_id, references(:users)
-      add :from_user, references(:users)
+      add :from_user_id, references(:users)
       add :message, :string
       add :status, :string
 

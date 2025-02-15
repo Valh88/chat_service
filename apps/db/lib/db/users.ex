@@ -21,6 +21,32 @@ defmodule Db.Users do
     |> Repo.one()
   end
 
+  def get_by_id(user_id) do
+    User
+    |> where(id: ^user_id)
+    |> Repo.one()
+  end
+  def get_by_id(user_id, :preload) do
+    User
+    |> where(id: ^user_id)
+    |> Repo.one()
+    |> Repo.preload(:contacts)
+  end
+
+  def delete(user) do
+    user
+    |> Repo.delete()
+  end
+
+  def add_contact(user_id, contact_id) do
+    user = get_by_id(user_id, :preload)
+    contact = get_by_id(contact_id)
+    user
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(:contacts, [contact])
+    |> Repo.update()
+  end
+
   def check_username_password?(password, password_hash) do
     Argon2.verify_pass(password, password_hash)
   end
