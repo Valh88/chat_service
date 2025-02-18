@@ -17,7 +17,6 @@ defmodule Server.Routers.WebSocket do
 
   get "/" do
     token = conn.assigns[:token]
-    IO.inspect(conn)
     with true <- Token.check_token?(token),
       user when user != nil <- Session.get_session(token) do
       conn

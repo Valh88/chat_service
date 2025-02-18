@@ -1,9 +1,14 @@
 defmodule Server.ClientSocket do
   @behaviour WebSock
 
-  def init(options) do
-    IO.inspect(self())
+  alias PubSub.Topic
+  alias Server.Session
 
+  def init([options]) do
+    IO.inspect(options)
+    user = Session.get_session(options)
+    Topic.register(5, user.id)
+    IO.inspect(Topic.lookup(5))
     send(self(), :push)
     {:ok, options}
   end

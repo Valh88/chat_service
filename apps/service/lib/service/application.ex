@@ -13,7 +13,8 @@ defmodule Service.Application do
       # Starts a worker by calling: Service.Worker.start_link(arg)
       # {Service.Worker, arg}
       Db.Repo,
-      {Bandit, plug: Server.RouterBuilder, scheme: :http, port: 4000}
+      {Bandit, plug: Server.RouterBuilder, scheme: :http, port: 4000},
+      PubSub.RegistrySupervisor,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
