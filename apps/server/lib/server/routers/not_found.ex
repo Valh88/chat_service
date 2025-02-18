@@ -7,5 +7,6 @@ defmodule Server.Routers.NotFound do
     conn
     |> put_resp_content_type("text/html")
     |> send_resp(404, "<h1>Page not found</h1>")
+    |> halt()
   end
 end

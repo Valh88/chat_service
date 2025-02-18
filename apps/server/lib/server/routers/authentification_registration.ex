@@ -3,7 +3,6 @@ defmodule Server.Routers.AuthentificationRegistration do
   alias Db.Users
   alias Server.Token
   alias Server.Session
-  # plug(Server.RedTokenPlug)
   plug(:match)
   plug(:dispatch)
 
