@@ -1,14 +1,15 @@
 defmodule Server.ClientSocket do
   @behaviour WebSock
 
-  alias PubSub.Topic
+  alias Plug.Session
+  alias PubSub.{Topic, Presence}
   alias Server.Session
 
   def init([options]) do
-    IO.inspect(options)
     user = Session.get_session(options)
-    Topic.register(5, user.id)
-    IO.inspect(Topic.lookup(5))
+    Presence.change_status_online(user.id)
+    Topic.subscripe_another_user_if_in_contacts(user.id)
+    Topic.subscribe_to_contacts(user.id)
     send(self(), :push)
     {:ok, options}
   end
@@ -19,21 +20,24 @@ defmodule Server.ClientSocket do
   end
 
   def handle_in({"Hello, WebSocket!", [opcode: :text]}, state) do
-    IO.inspect(state)
     # {:reply, :ok, {:text, "pong"}, state}
     {:reply, :ok, {:text, "pong"}, state}
   end
 
-  # def terminate(:timeout, state) do
-  #   IO.inspect("termin")
-  #   {:ok, state}
-  # end
+  def terminate(:timeout, state) do
+    IO.inspect("termin")
+    {:ok, state}
+  end
 
   def handle_info(:push, state) do
     {:reply, :ok, {:text, "test"}, state}
   end
 
   def terminate(_mess, state) do
+    user = Session.get_session(state)
+    Session.delete_session(state)
+    Presence.change_status_offline(user.id)
+    Topic.unregister(user.id)
     {:stop, :normal, state}
   end
 end
