@@ -1,7 +1,6 @@
 defmodule Server.Token do
   use Joken.Config
 
-  alias Db.Users
   # Конфигурация токена
   def token_config() do
     default_claims()

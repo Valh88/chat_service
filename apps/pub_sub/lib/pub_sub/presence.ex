@@ -15,4 +15,11 @@ defmodule PubSub.Presence do
       [] -> false
     end
   end
+
+  def get_online_user(user_id) do
+    case Registry.lookup(@table, user_id) do
+      [{pid, user_id}] -> {pid, user_id}
+      [] -> false
+    end
+  end
 end

@@ -11,7 +11,7 @@ defmodule PubSub.Topic do
     Registry.lookup(@table, topic)
   end
 
-  def unregister(topic) do
+  def unregister_broadcast(topic) do
     fun = fn data ->
       for {pid, id} <- data do
         if topic != id do
@@ -20,7 +20,10 @@ defmodule PubSub.Topic do
       end
     end
     Registry.dispatch(@table, topic, fun)
-    Registry.unregister(@table, topic)
+  end
+
+  def unregister(user_id) do
+    Registry.unregister(@table, user_id)
   end
 
   def status(topic, pid) do
@@ -30,19 +33,11 @@ defmodule PubSub.Topic do
   def subscripe_another_user_if_in_contacts(user_id) do
     users_on_sub_to_user = Contacts.contact_users_by_contact_id(user_id)
 
-    fun = fn data ->
-      for {pid, id} <- data do
-        if user_id != id do
-          send(pid, {:broadcast, {:status, user_id, "online"}})
-        end
-      end
-    end
     for user <- users_on_sub_to_user do
-      if Presence.is_online?(user) do
-        register(user_id, user)
-        Registry.dispatch(@table, user_id, fun)
-      else
-        # IO.inspect("dsadsad")
+      case Presence.get_online_user(user) do
+        {pid, _contact_id_if_current_user_in_contact} ->
+          send(pid, {:broadcast, {:status, user_id, "online"}})
+        _ -> false
       end
     end
   end
