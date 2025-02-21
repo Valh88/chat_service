@@ -17,7 +17,7 @@ defmodule Server.ClientSocket do
 
   def handle_in({"ping", [opcode: :text]}, state) do
     case Session.get_session(state) do
-      nil -> send(:remote, self())
+      nil -> send(self(), :remote)
       _current_user -> {:reply, :ok, {:text, "pong"}, state}
     end
   end
