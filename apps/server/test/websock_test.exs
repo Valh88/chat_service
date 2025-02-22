@@ -37,7 +37,7 @@ defmodule WebsockTest do
     %{"account" => %{"username" => "username7", "password" => "password7"}},
     %{"account" => %{"username" => "username8", "password" => "password8"}},
     %{"account" => %{"username" => "username9", "password" => "password9"}},
-    %{"account" => %{"username" => "username10", "password" => "password10"}},
+    %{"account" => %{"username" => "username10", "password" => "password10"}}
   ]
 
   setup do
@@ -51,7 +51,7 @@ defmodule WebsockTest do
     %{server: pid}
   end
 
-  setup_all  do
+  setup_all do
     register_login_add_session = fn user ->
       conn =
         conn(:post, "/api/registration", user)
@@ -66,6 +66,7 @@ defmodule WebsockTest do
       assert conn.status == 200
       Jason.decode!(conn.resp_body)["token"]
     end
+
     {:ok, %{users: Enum.map(@users, register_login_add_session)}}
   end
 
@@ -82,8 +83,10 @@ defmodule WebsockTest do
     run_client = fn token_client ->
       WebSockClient.start_link(token_client)
     end
+
     users_pid =
       Enum.map(tokens_users, run_client)
+
     assert 4 == 4
   end
 end

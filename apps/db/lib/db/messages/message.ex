@@ -15,8 +15,8 @@ defmodule Db.Messages.Message do
 
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:user_id, :message, :from_user_id])
-    |> validate_required([:user_id, :message, :from_user_id])
-    |> put_change(:status, "undelivered")
+    |> cast(attrs, [:user_id, :message, :from_user_id, :status])
+    |> validate_required([:user_id, :message, :from_user_id, :status])
+    # |> put_change(:status, "undelivered")
   end
 end

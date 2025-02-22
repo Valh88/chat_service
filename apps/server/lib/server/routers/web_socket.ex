@@ -4,16 +4,6 @@ defmodule Server.Routers.WebSocket do
   plug(:match)
   plug(:dispatch)
 
-  get "/rt" do
-    send_resp(conn, 200, """
-    Use the JavaScript console to interact using websockets
-
-    sock  = new WebSocket("ws://localhost:4000/websocket")
-    sock.addEventListener("message", console.log)
-    sock.addEventListener("open", () => sock.send("ping"))
-    """)
-  end
-
   get "/" do
     token = conn.assigns[:token]
 
