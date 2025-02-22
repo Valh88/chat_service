@@ -4,7 +4,6 @@ defmodule Server.Routers.WebSocket do
   plug(:match)
   plug(:dispatch)
 
-
   get "/rt" do
     send_resp(conn, 200, """
     Use the JavaScript console to interact using websockets
@@ -17,8 +16,9 @@ defmodule Server.Routers.WebSocket do
 
   get "/" do
     token = conn.assigns[:token]
+
     with true <- Token.check_token?(token),
-      user when user != nil <- Session.get_session(token) do
+         user when user != nil <- Session.get_session(token) do
       conn
       |> WebSockAdapter.upgrade(Server.ClientSocket, [token], timeout: 60_000)
       |> halt()

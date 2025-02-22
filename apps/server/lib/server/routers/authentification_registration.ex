@@ -13,7 +13,10 @@ defmodule Server.Routers.AuthentificationRegistration do
          user when user != nil <- Session.get_session(token) do
       conn
       |> put_resp_content_type("application/json")
-      |> send_resp(200, Jason.encode!(%{status: "success", user: %{id: user.id, username: user.username}}))
+      |> send_resp(
+        200,
+        Jason.encode!(%{status: "success", user: %{id: user.id, username: user.username}})
+      )
     else
       nil ->
         conn
@@ -86,22 +89,24 @@ defmodule Server.Routers.AuthentificationRegistration do
 
   delete("/me") do
     token = conn.assigns[:token]
+
     with true <- Token.check_token?(token),
-      user when user != nil <- Session.get_session(token) do
+         user when user != nil <- Session.get_session(token) do
       Session.delete_session(token)
+
       conn
       |> put_resp_content_type("application/json")
       |> send_resp(200, Jason.encode!(%{status: "success"}))
     else
-    nil ->
-      conn
-      |> put_resp_content_type("application/json")
-      |> send_resp(401, Jason.encode!(%{status: "error", error: "invalid token"}))
+      nil ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(401, Jason.encode!(%{status: "error", error: "invalid token"}))
 
-    _ ->
-      conn
-      |> put_resp_content_type("application/json")
-      |> send_resp(500, Jason.encode!(%{status: "error", error: "server error"}))
+      _ ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(500, Jason.encode!(%{status: "error", error: "server error"}))
     end
   end
 

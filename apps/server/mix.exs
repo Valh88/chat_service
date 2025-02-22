@@ -31,7 +31,9 @@ defmodule Server.MixProject do
       {:bandit, "~> 1.6.7"},
       {:websock_adapter, "~> 0.5.8"},
       {:jason, "~> 1.4"},
-      {:joken, "~> 2.6.2"}
+      {:joken, "~> 2.6.2"},
+      {:websockex, "~> 0.4.3", only: [:test]},
+      {:httpoison, "~> 2.0", only: [:test]}
     ]
   end
 end

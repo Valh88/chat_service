@@ -2,7 +2,7 @@ defmodule PubSub.Presence do
   @table PubSub.UsersPresence
 
   def change_status_online(user_id) do
-      Registry.register(@table, user_id, user_id)
+    Registry.register(@table, user_id, user_id)
   end
 
   def change_status_offline(user_id) do

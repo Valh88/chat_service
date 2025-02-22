@@ -16,7 +16,7 @@ defmodule PlugTest do
 
   test "/registration" do
     conn =
-      conn(:post, "/registration", %{
+      conn(:post, "/api/registration", %{
         "account" => %{"username" => "username", "password" => "password"}
       })
 
@@ -24,7 +24,7 @@ defmodule PlugTest do
     assert conn.status == 201
 
     conn =
-      conn(:post, "/registration", %{
+      conn(:post, "/api/registration", %{
         "account" => %{"username" => "username", "password" => "password"}
       })
 
@@ -40,7 +40,9 @@ defmodule PlugTest do
     Db.Users.create(%{password: "password", username: "username"})
 
     conn =
-      conn(:post, "/login", %{"account" => %{"username" => "username", "password" => "password"}})
+      conn(:post, "/api/login", %{
+        "account" => %{"username" => "username", "password" => "password"}
+      })
 
     conn = Server.RouterBuilder.call(conn, Server.RouterBuilder.init([]))
     assert conn.status == 200

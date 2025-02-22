@@ -19,6 +19,7 @@ defmodule PubSub.Topic do
         end
       end
     end
+
     Registry.dispatch(@table, topic, fun)
   end
 
@@ -37,7 +38,9 @@ defmodule PubSub.Topic do
       case Presence.get_online_user(user) do
         {pid, _contact_id_if_current_user_in_contact} ->
           send(pid, {:broadcast, {:status, user_id, "online"}})
-        _ -> false
+
+        _ ->
+          false
       end
     end
   end

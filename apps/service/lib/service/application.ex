@@ -5,6 +5,12 @@ defmodule Service.Application do
 
   use Application
 
+  def application do
+    [
+      extra_applications: [:logger, :hackney]
+    ]
+  end
+
   @impl true
   def start(_type, _args) do
     Server.Session.init()
@@ -14,7 +20,7 @@ defmodule Service.Application do
       # {Service.Worker, arg}
       Db.Repo,
       {Bandit, plug: Server.RouterBuilder, scheme: :http, port: 4000},
-      PubSub.RegistrySupervisor,
+      PubSub.RegistrySupervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

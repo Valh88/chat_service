@@ -26,6 +26,7 @@ defmodule Db.Users do
     |> where(id: ^user_id)
     |> Repo.one()
   end
+
   def get_by_id(user_id, :preload) do
     User
     |> where(id: ^user_id)
@@ -41,6 +42,7 @@ defmodule Db.Users do
   def add_contact(user_id, contact_id) do
     user = get_by_id(user_id, :preload)
     contact = get_by_id(contact_id)
+
     user
     |> Ecto.Changeset.change()
     |> Ecto.Changeset.put_assoc(:contacts, [contact])

@@ -13,7 +13,6 @@ defmodule Db.Messages.Message do
     timestamps()
   end
 
-
   def changeset(message, attrs) do
     message
     |> cast(attrs, [:user_id, :message, :from_user_id])
