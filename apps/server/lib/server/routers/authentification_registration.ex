@@ -3,6 +3,12 @@ defmodule Server.Routers.AuthentificationRegistration do
   alias Db.Users
   alias Server.Token
   alias Server.Session
+
+  plug CORSPlug,
+    origin: ["*"],
+    methods: ["GET", "POST", "DELETE"]
+    # headers: ["Access-Control-Allow-Origin"]
+
   plug(:match)
   plug(:dispatch)
 
@@ -37,7 +43,7 @@ defmodule Server.Routers.AuthentificationRegistration do
           {:ok, _user} ->
             conn
             |> put_resp_content_type("application/json")
-            |> send_resp(201, Jason.encode!(%{status: "success"}))
+            |> send_resp(201, Jason.encode!(%{status: "success", data: "registration ok"}))
 
           {:error, changeset} ->
             conn
@@ -96,7 +102,7 @@ defmodule Server.Routers.AuthentificationRegistration do
 
       conn
       |> put_resp_content_type("application/json")
-      |> send_resp(200, Jason.encode!(%{status: "success"}))
+      |> send_resp(200, Jason.encode!(%{status: "success", data: "deleted"}))
     else
       nil ->
         conn

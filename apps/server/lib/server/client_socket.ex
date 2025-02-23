@@ -15,14 +15,13 @@ defmodule Server.ClientSocket do
   end
 
   def handle_in({"ping", [opcode: :text]}, state) do
-    {:reply, :ok, {:text, "pong"}, state}
-  end
-
-  def handle_in({"Hello, WebSocket!", [opcode: :text]}, state) do
-    {:reply, :ok, {:text, "pong"}, state}
+    _current_user = Session.get_session(state)
+    json = Jason.encode!(%{ping: "pong"})
+    {:reply, :ok, {:text, json}, state}
   end
 
   def handle_in({data, [opcode: :text]}, state) do
+    IO.inspect(data)
     case Message.json_to_struct(data) do
       %Message{} = message ->
         Message.send_message(message)
@@ -99,7 +98,7 @@ defmodule Server.ClientSocket do
         {:stop, :normal, state}
 
       user ->
-        Session.delete_session(state)
+        # Session.delete_session(state)
         Presence.change_status_offline(user.id)
         Topic.unregister_broadcast(user.id)
     end
