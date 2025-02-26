@@ -4,10 +4,12 @@ defmodule Server.Routers.AuthentificationRegistration do
   alias Server.Token
   alias Server.Session
 
-  plug CORSPlug,
+  plug(CORSPlug,
     origin: ["*"],
     methods: ["GET", "POST", "DELETE"]
-    # headers: ["Access-Control-Allow-Origin"]
+  )
+
+  # headers: ["Access-Control-Allow-Origin"]
 
   plug(:match)
   plug(:dispatch)

@@ -25,8 +25,8 @@ defmodule Server.Message do
             %Message{
               type: :private,
               message: %{
-                from: String.to_integer(mess["message"]["from"]),
-                to: String.to_integer(mess["message"]["to"]),
+                from: mess["message"]["from"],
+                to: mess["message"]["to"],
                 message: mess["message"]["message"]
               }
             }
@@ -52,13 +52,17 @@ defmodule Server.Message do
   end
 
   def send_message(message) do
-    case Presence.get_online_user(message.message.to) do
+    case Presence.get_online_user(String.to_integer(message.message.to)) do
       {pid, _user_id} ->
         IO.inspect(pid)
         send(pid, {:broadcast, {:message, message}})
 
       false ->
-        Messages.create_undelivered(message.message.to, message.message.message, message.message.from)
+        Messages.create_undelivered(
+          message.message.to,
+          message.message.message,
+          message.message.from
+        )
     end
   end
 
@@ -69,10 +73,13 @@ defmodule Server.Message do
 
   def new_messages(user_id) do
     messages = Messages.check_new_messages(user_id)
+
     fun = fn message ->
       %{from: message.from_user_id, message: message.message, date: message.inserted_at}
     end
+
     Messages.update_status_delivered(user_id)
+
     %{new_messages: Enum.map(messages, fun)}
     |> Jason.encode!()
   end

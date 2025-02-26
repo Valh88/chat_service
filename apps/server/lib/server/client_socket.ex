@@ -10,6 +10,7 @@ defmodule Server.ClientSocket do
     user = Session.get_session(options)
     Presence.change_status_online(user.id)
     Topic.subscripe_another_user_if_in_contacts(user.id)
+    IO.inspect(self())
     send(self(), {:event, :contacts})
     {:ok, options}
   end
@@ -22,12 +23,16 @@ defmodule Server.ClientSocket do
 
   def handle_in({data, [opcode: :text]}, state) do
     IO.inspect(data)
+
     case Message.json_to_struct(data) do
       %Message{} = message ->
         Message.send_message(message)
-      {:error, error} -> IO.inspect(error)
+
+      {:error, error} ->
+        IO.inspect(error)
     end
-    #TODO maybe check delivered undelivered
+
+    # TODO maybe check delivered undelivered
     {:ok, state}
   end
 
@@ -73,6 +78,7 @@ defmodule Server.ClientSocket do
         %{user: contact.id, username: contact.username, status: "offline"}
       end
     end
+
     send(self(), {:event, :new_messages})
     contacts = Enum.map(current_user.contacts, fun)
     json = Jason.encode!(%{contacts: contacts})
@@ -98,7 +104,7 @@ defmodule Server.ClientSocket do
         {:stop, :normal, state}
 
       user ->
-        # Session.delete_session(state)
+        Session.delete_session(state)
         Presence.change_status_offline(user.id)
         Topic.unregister_broadcast(user.id)
     end

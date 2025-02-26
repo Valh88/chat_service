@@ -34,7 +34,7 @@ defmodule Server.MixProject do
       {:joken, "~> 2.6.2"},
       {:websockex, "~> 0.4.3", only: [:test]},
       {:httpoison, "~> 2.0", only: [:test]},
-      {:cors_plug, "~> 3.0"},
+      {:cors_plug, "~> 3.0"}
     ]
   end
 end

@@ -17,6 +17,7 @@ defmodule Db.Messages.Message do
     message
     |> cast(attrs, [:user_id, :message, :from_user_id, :status])
     |> validate_required([:user_id, :message, :from_user_id, :status])
+
     # |> put_change(:status, "undelivered")
   end
 end
