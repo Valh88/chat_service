@@ -20,7 +20,8 @@ defmodule Service.Application do
       # {Service.Worker, arg}
       Db.Repo,
       {Bandit, plug: Server.RouterBuilder, scheme: :http, port: 4000},
-      PubSub.RegistrySupervisor
+      PubSub.RegistrySupervisor,
+      PubSub.RoomDynamicSupervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

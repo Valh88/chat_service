@@ -2,7 +2,7 @@ defmodule Server.ClientSocket do
   @behaviour WebSock
 
   alias Plug.Session
-  alias PubSub.{Topic, Presence}
+  alias PubSub.{Topic, Presence, Room, RoomDynamicSupervisor}
   alias Server.{Session, Message}
   alias Db.{Users, Messages}
 
@@ -10,6 +10,8 @@ defmodule Server.ClientSocket do
     user = Session.get_session(options)
     Presence.change_status_online(user.id)
     Topic.subscripe_another_user_if_in_contacts(user.id)
+    RoomDynamicSupervisor.add_new_room("1")
+    # Room.register("2", user.id)
     IO.inspect(self())
     send(self(), {:event, :contacts})
     {:ok, options}
@@ -90,6 +92,12 @@ defmodule Server.ClientSocket do
     json = Message.new_messages(current_user.id)
     {:reply, :ok, {:text, json}, state}
   end
+
+  def handle_info({:broadcast, {:room, room, message}}, state) do
+    IO.inspect(message)
+    {:ok, state}
+  end
+
 
   def terminate(:timeout, state) do
     # IO.inspect("termin")

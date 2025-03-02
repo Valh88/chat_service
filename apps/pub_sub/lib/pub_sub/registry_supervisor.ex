@@ -10,7 +10,9 @@ defmodule PubSub.RegistrySupervisor do
       {Registry,
        keys: :duplicate, name: PubSub.DispatcherRegistry, partitions: System.schedulers_online()},
       {Registry,
-       keys: :unique, name: PubSub.UsersPresence, partitions: System.schedulers_online()}
+       keys: :unique, name: PubSub.UsersPresence, partitions: System.schedulers_online()},
+      {Registry,
+       keys: :duplicate, name: PubSub.RoomBroadcast, partitions: System.schedulers_online()}
     ]
 
     opts = [strategy: :one_for_one, name: Service.RegistrySupervisor]
