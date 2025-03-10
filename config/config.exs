@@ -28,8 +28,3 @@ config :db, Db.Repo,
 config :db, ecto_repos: [Db.Repo]
 
 config :joken, default_signer: "my_secret_key"
-
-# config :my_app, :releases,
-#   db: [applications: [db: :permanent]],
-#   pub_sub: [applications: [pub_sub: :permanent]],
-#   server: [applications: [server: :permanent]]

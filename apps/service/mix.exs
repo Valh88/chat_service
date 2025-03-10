@@ -20,7 +20,7 @@ defmodule Service.MixProject do
     [
       extra_applications: [:logger],
       mod: {Service.Application, []},
-      included_applications: [:db]  #обязательно если умбрелла проект добавить чтоб видел релиз
+      included_applications: [:db, :pub_sub, :server, :service]  #обязательно если умбрелла проект добавить чтоб видел релиз
     ]
   end
 
