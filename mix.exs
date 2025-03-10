@@ -5,8 +5,22 @@ defmodule ChatService.MixProject do
     [
       apps_path: "apps",
       version: "0.1.0",
+      elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      include_erts: true,  # Включаем ERTS в релиз
+      include_executables_for: [:unix],  # Включаем исполняемые файлы для Unix
+      steps: [:assemble, :tar], #
+      deps: deps(),
+      releases: [
+        rel_v1: [
+          applications: [
+            service: :permanent,
+            db: :permanent,
+            pub_sub: :permanent,
+            server: :permanent
+          ],
+        ]
+      ]
     ]
   end
 

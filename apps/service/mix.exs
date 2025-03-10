@@ -11,7 +11,7 @@ defmodule Service.MixProject do
       lockfile: "../../mix.lock",
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
     ]
   end
 
@@ -19,7 +19,8 @@ defmodule Service.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Service.Application, []}
+      mod: {Service.Application, []},
+      included_applications: [:db]  #обязательно если умбрелла проект добавить чтоб видел релиз
     ]
   end
 

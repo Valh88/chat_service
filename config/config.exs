@@ -15,6 +15,7 @@ config :db, Db.Repo,
   password: "postgres",
   database: "database_repo",
   hostname: "localhost",
+  port: 5432,
   pool_size: 10
 
 # Sample configuration:
@@ -27,3 +28,8 @@ config :db, Db.Repo,
 config :db, ecto_repos: [Db.Repo]
 
 config :joken, default_signer: "my_secret_key"
+
+# config :my_app, :releases,
+#   db: [applications: [db: :permanent]],
+#   pub_sub: [applications: [pub_sub: :permanent]],
+#   server: [applications: [server: :permanent]]

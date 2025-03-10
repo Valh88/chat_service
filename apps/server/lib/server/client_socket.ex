@@ -10,7 +10,6 @@ defmodule Server.ClientSocket do
     user = Session.get_session(options)
     Presence.change_status_online(user.id)
     Topic.subscripe_another_user_if_in_contacts(user.id)
-    IO.inspect(self())
     send(self(), {:event, :contacts})
     {:ok, options}
   end

@@ -1,0 +1,39 @@
+# version: '3'
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB}
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  asterisk:
+    image: andrius/asterisk
+    # build: 
+    #   context: ./
+    container_name: asterisk_doc
+    volumes:
+      - ./sip.conf:/etc/asterisk/sip.conf
+      - ./extensions.conf:/etc/asterisk/extensions.conf
+    ports:
+      - "5060:5060"
+  elix_app:
+    build: 
+      context: ../
+      dockerfile: ./deploy/elix_app.DockerFile
+
+    container_name: elix_app
+    ports:
+      - "4000:4000"
+    # entrypoint: 
+    #   - MIX_ENV=prod
+    depends_on:
+      - db
+volumes:
+  db_data:
