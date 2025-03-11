@@ -20,3 +20,4 @@ erl_crash.dump
 /tmp/
 .vscode
 .elixir_ls
+deploy/db_data/
